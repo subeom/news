@@ -3,6 +3,8 @@ require "sinatra/reloader"
 require "httparty"
 def view(template); erb template.to_sym; end
 
+set :bind, '0.0.0.0'
+
 get "/" do
   ### Get the weather
   # Evanston, Kellogg Global Hub... replace with a different location if you want
