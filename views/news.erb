@@ -1,79 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/6eef19e1b8.js" crossorigin="anonymous"></script>
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
-
     <title>My News and Weather Forecast</title>
-
-</head>
-
-<body>
-
+  </head>
+  <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand righteous" href="/">My News and Weather Forecast</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            </div>
-
-        </div>
-    </nav>
-
-    <div class="accordion acc-movie">
-        <div class="row">
-          <% for article in @news["articles"] %>
-            <div class="col-sm-6 col-md-3 card-margin">
-                <div class="card text-white bg-dark mb-3">
-                    <img src="<%= article["urlToImage"] %>" class="card-img-top img-fluid">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= article["title"] %></h5>
-                        <p class="card-text"><%= article["description"] %></p>
-                        <a href="<%= article["url"] %>" class="btn btn-outline-secondary" target="_tab">Go to the article</a>
-                    </div>
+      <div class="container">
+        <a class="navbar-brand righteous" href="/">My News and Weather Forecast</a>
+      </div>
+    </div>
+  </nav>
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h3 class="righteous top-margin">Current Weather</h3>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 card-margin">
+          <div class="card text-white bg-dark mb-12">
+            <div class="row">
+              <div class="col-sm-3">
+                <img src="http://openweathermap.org/img/wn/<%= @forecast["current"]["weather"][0]["icon"] %>@2x.png" class="card-img-top img-fluid">
+              </div>
+              <div class="col-sm">
+                <div class="card-body">
+                  <h6 class="text-grey">Current</h6>
+                  <h5 class="card-title"><%= @forecast["current"]["weather"][0]["main"] %></h5>
+                  <ul class="list-group">
+                    <li class="list-group-item card-text">Temperature: <%= @forecast["current"]["temp"].round %></li>
+                    <li class="list-group-item card-text">Feels Like: <%= @forecast["current"]["feels_like"].round %></li>
+                    <li class="list-group-item card-text">Wind Speed: <%= @forecast["current"]["wind_speed"].round %></li>
+                  </ul>
+                  <h6 class="text-grey time"><%= Time.at(@forecast["current"]["dt"]).strftime("%d/%m/%Y") %></h6>
                 </div>
+              </div>
             </div>
-          <% end %>
+          </div>
         </div>
-    </div>
-
-
-
-
-    <div class="container-fluid fixed-bottom bg-color">
-        <div class="row">
-            <div class="col-md-12 text-center text-grey">
-                <small>Copyright <a href="index.html" class="text-darkgrey righteous">My Favorites</a> <i class="far fa-copyright"></i> 2020. All rights reserved.</small>
+      </div>
+      <h3 class="righteous top-margin">Weather Forecast</h3>
+      <div class="row">
+        <% for day in @forecast["daily"] %>
+          <div class="col-sm-6 col-md-3 card-margin">
+            <div class="card text-white bg-dark mb-3">
+              <img src="http://openweathermap.org/img/wn/<%= day["weather"][0]["icon"] %>@2x.png" class="card-img-top img-fluid">
+              <div class="card-body">
+                <h6 class="text-grey"><%= Time.at(day["dt"]).strftime("%d/%m/%Y") %></h6>
+                <h5 class="card-title"><img src=""><%= day["weather"][0]["main"] %></h5>
+                <ul class="list-group">
+                  <li class="list-group-item card-text">Temperature: <%= day["temp"]["min"].round %> - <%= day["temp"]["max"].round %></li>
+                  <% feels_like = [day["feels_like"]["morn"],day["feels_like"]["day"],day["feels_like"]["eve"],day["feels_like"]["night"]] %>
+                  <li class="list-group-item card-text">Feels Like: <%= feels_like.min.round %> - <%= feels_like.max.round %></li>
+                  <li class="list-group-item card-text">Wind Speed: <%= day["wind_speed"].round %></li>
+                </ul>
+              </div>
             </div>
-        </div>
+          </div>
+        <% end %>
+      </div>
     </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+  </div>
+  <div class="accordion acc-movie">
+    <div class="row">
+      <% for article in @news["articles"] %>
+        <div class="col-sm-6 col-md-3 card-margin">
+          <div class="card text-white bg-dark mb-3">
+            <img src="<%= article["urlToImage"] %>" class="card-img-top img-fluid">
+            <div class="card-body">
+              <h6 class="text-grey"><%= article["source"]["name"] %></h6>
+              <h5 class="card-title"><%= article["title"] %></h5>
+              <p class="card-text"><%= article["description"] %></p>
+              <h6 class="text-grey"><%= article["publishedAt"] %></h6>
+              <a href="<%= article["url"] %>" class="btn btn-outline-secondary" target="_tab">Go to the article</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="container-fluid fixed-bottom bg-color">
+    <div class="row">
+      <div class="col-md-12 text-center text-grey">
+        <small>Copyright <a href="index.html" class="text-darkgrey righteous">My News and Weather Forecast</a> <i class="far fa-copyright"></i> 2020. All rights reserved.</small>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
-
 </html>

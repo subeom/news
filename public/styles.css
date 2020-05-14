@@ -4,12 +4,16 @@ h1,
     font-family: 'Righteous', cursive;
 }
 
+.righteous.top-margin {
+    margin-top:8px;
+}
+
 .pagetop {
     padding-top: 56px;
 }
 
 .card-margin {
-    margin-top: 1.3rem;
+    margin-top: 0rem;
 }
 
 body {
@@ -39,4 +43,23 @@ body {
 .btn-accordion {
     font-size:1.5rem;
     text-align:left;
+}
+
+.card-text {
+    color: #555555;
+}
+
+.card-text:hover {
+    color: #999999
+}
+
+.time {
+    margin-top: 8px;
+}
+
+.jumbotron {
+    padding-top: 0.2rem;
+    padding-bottom: 0.5rem;
+    background-image: linear-gradient(to bottom, rgba(200,200,200,0.3) 0%,rgba(200,200,200,0.6) 100%), url("/background.png");
+    background-size: cover;
 }
